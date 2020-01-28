@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace VanderGraaf
 {
-    public partial class Form1 : Form
+    public partial class VDGWindow : Form
     {
-        public Form1()
+        public VDGWindow()
         {
             InitializeComponent();
         }

@@ -2,4 +2,4 @@
 
 a static site generator
 
-<a href="https://kohoutech.github.io/Kohoutech.Van-der-Graaf/">project documentation</a><br/>
+<a href="https://kohoutech.github.io/Van-der-Graaf/">project documentation</a><br/>

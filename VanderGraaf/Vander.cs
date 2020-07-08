@@ -21,15 +21,43 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace VanderGraaf
-{
-    class Program
+{ 
+    class Vander
     {
-        static void Main(string[] args)
+        public String sourcename;
+        public string[] source;
+
+        public String outname;
+        public List<String> output;
+
+        public Vander(String _sourcename, String _outname)
         {
-            Vander vdg = new Vander(@"..\..\..\proof\template.vdg", @"..\..\..\proof\index.html");
-            vdg.generate();
+            sourcename = _sourcename;
+            outname = _outname;
+        }
+
+        public void generate()
+        {
+            source = File.ReadAllLines(sourcename);
+            output = new List<string>();
+            StringBuilder outline = new StringBuilder();
+
+            foreach(string s in source)
+            {
+                outline.Clear();
+                for (int i = 0; i < s.Length; i++)
+                {
+                    char c = s[i];
+                    outline.Append(c);
+                }
+
+                output.Add(outline.ToString());
+            }
+
+            File.WriteAllLines(outname, output);
         }
     }
 }

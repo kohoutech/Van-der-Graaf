@@ -23,27 +23,29 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-using VanderGraaf.Commands;
+using VDG.Commands;
 
-namespace VanderGraaf
+namespace VDG
 {
     class Vander
     {
-        public String sourcename;
-        public string[] source;
+        public String templatename;
+        public string[] templatesrc;
 
-        public String outname;
-        public List<String> output;
+        public String contentname;
+        public string[] contentsrc;
+
+        public String outputname;
+        public List<String> outputtxt;
 
         public Dictionary<String, Symbol> symbolTable;
 
-        public Vander(String _sourcename, String _outname)
-        {
-            sourcename = _sourcename;
-            outname = _outname;
-            
+        public Vander()
+        {            
             initializeCommands();
         }
+
+        //- initialization --------------------------------------------------------
 
         public void initializeCommands()
         {
@@ -51,13 +53,30 @@ namespace VanderGraaf
             symbolTable.Add("date", new DateCmd());
         }
 
+        public void setTemplateFile(string _templatename)
+        {
+            templatename = _templatename;
+        }
+
+        public void setContentFile(string _contentname)
+        {
+            contentname = _contentname;
+        }
+
+        public void setOutputFile(string _outputname)
+        {
+            outputname = _outputname;
+        }
+
+        //- generation --------------------------------------------------------
+
         public void generate()
         {
-            source = File.ReadAllLines(sourcename);
-            output = new List<string>();
+            templatesrc = File.ReadAllLines(templatename);
+            outputtxt = new List<string>();
             StringBuilder outline = new StringBuilder();
 
-            foreach (string s in source)
+            foreach (string s in templatesrc)
             {
                 outline.Clear();
 
@@ -79,10 +98,10 @@ namespace VanderGraaf
                 }
                 outline.Append(s.Substring(i));
 
-                output.Add(outline.ToString());
+                outputtxt.Add(outline.ToString());
             }
 
-            File.WriteAllLines(outname, output);
+            File.WriteAllLines(outputname, outputtxt);
         }
 
         public String parseCommand(String s)

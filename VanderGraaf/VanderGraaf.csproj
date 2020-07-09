@@ -44,12 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Command.cs" />
-    <Compile Include="Commands\DateCmd.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="VanderGraaf.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Symbol.cs" />
-    <Compile Include="Vander.cs" />
+    <Compile Include="VDG\Commands\Command.cs" />
+    <Compile Include="VDG\Commands\DateCmd.cs" />
+    <Compile Include="VDG\Symbol.cs" />
+    <Compile Include="VDG\Vander.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

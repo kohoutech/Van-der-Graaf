@@ -22,14 +22,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VanderGraaf
+//base class of all commands
+
+namespace VDG.Commands
 {
-    class Program
+    internal class Command : Symbol
     {
-        static void Main(string[] args)
+        public virtual String run(List<String> args)
         {
-            Vander vdg = new Vander(@"..\..\..\proof\template.vdg", @"..\..\..\proof\index.html");
-            vdg.generate();
+            return null;
         }
     }
 }

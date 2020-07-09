@@ -22,9 +22,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using VDG;
+
 namespace VanderGraaf
 {
-    class Symbol
+    class VanderGraaf
     {
+        public String templatename;
+        public String contentname;
+        public String outputname;
+
+        public VanderGraaf(string[] args)
+        {
+            if (args.Length < 3)
+            {
+                Console.WriteLine("syntax: vandergraaf <template file> <content file> <output file>");
+                System.Environment.Exit(1);
+            }
+
+            templatename = args[0];
+            contentname = args[1];
+            outputname = args[2];
+        }
+
+        public void generate()
+        {
+            Vander vander = new Vander();
+
+            vander.setTemplateFile(templatename);
+            vander.setContentFile(contentname);
+            vander.setOutputFile(outputname);
+
+            vander.generate();
+        }
+
+        static void Main(string[] args)
+        {
+            VanderGraaf vdg = new VanderGraaf(args);
+            vdg.generate();
+        }
     }
 }
+
+//Console.WriteLine("there's no sun in the shadow of the Wizard");

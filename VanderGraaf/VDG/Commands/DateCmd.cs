@@ -22,13 +22,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VanderGraaf.Commands
+namespace VDG.Commands
 {
-    class Command : Symbol
+    internal class DateCmd : Command
     {
-        public virtual String run(List<String> args)
+        //using MS date format syntax for now
+        //why reinvent the wheel?
+        public override String run(List<String> args)
         {
-            return null;
+            String format = args[0];
+            DateTime now = DateTime.Now;
+            String datestr = now.ToString(format);
+
+            return datestr;
         }
     }
 }

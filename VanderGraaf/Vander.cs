@@ -23,8 +23,10 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
+using VanderGraaf.Commands;
+
 namespace VanderGraaf
-{ 
+{
     class Vander
     {
         public String sourcename;
@@ -33,10 +35,20 @@ namespace VanderGraaf
         public String outname;
         public List<String> output;
 
+        public Dictionary<String, Symbol> symbolTable;
+
         public Vander(String _sourcename, String _outname)
         {
             sourcename = _sourcename;
             outname = _outname;
+            
+            initializeCommands();
+        }
+
+        public void initializeCommands()
+        {
+            symbolTable = new Dictionary<string, Symbol>();
+            symbolTable.Add("date", new DateCmd());
         }
 
         public void generate()
@@ -45,19 +57,69 @@ namespace VanderGraaf
             output = new List<string>();
             StringBuilder outline = new StringBuilder();
 
-            foreach(string s in source)
+            foreach (string s in source)
             {
                 outline.Clear();
-                for (int i = 0; i < s.Length; i++)
+
+                int i = 0;
+                int pos = s.IndexOf("{{", i);
+                while (pos != -1)
                 {
-                    char c = s[i];
-                    outline.Append(c);
+                    int endpos = s.IndexOf("}}", pos + 2);
+                    int len = (endpos - pos - 2);
+                    String cmdstr = s.Substring(pos + 2, len);
+                    
+                    String resultstr = parseCommand(cmdstr);
+
+                    outline.Append(s.Substring(i, pos - i));
+                    outline.Append(resultstr);
+
+                    i = endpos + 2;
+                    pos = s.IndexOf("{{", i);
                 }
+                outline.Append(s.Substring(i));
 
                 output.Add(outline.ToString());
             }
 
             File.WriteAllLines(outname, output);
+        }
+
+        public String parseCommand(String s)
+        {
+            String result = "";
+
+            int sep = s.IndexOf(':');
+            String cmdstr = s.Substring(0, sep);
+            String argstr = s.Substring(sep + 1);
+
+            if (symbolTable.ContainsKey(cmdstr))
+            {
+                Symbol sym = symbolTable[cmdstr];
+                if (sym is Command)
+                {
+                    //build arg list
+                    List<string> args = new List<string>();
+                    int i = 0;
+                    int delim = argstr.IndexOf(',', i);
+                    while (delim != -1)
+                    {
+                        if (argstr[delim - 1] != '\\')
+                        {
+                            int len = delim - i;
+                            args.Add(argstr.Substring(i, len));
+                            i = delim + 1;
+                        }
+                        delim = argstr.IndexOf(',', delim+1);
+                    }
+                    args.Add(argstr.Substring(i));
+
+                    Command cmd = (Command)sym;
+                    result = cmd.run(args);
+                }
+            }
+
+            return result;
         }
     }
 }
